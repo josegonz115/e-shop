@@ -21,6 +21,7 @@ import { addToCart } from "../slices/cartSlice";
 import Message from "../components/Message";
 import ErrorState from "../components/ErrorState";
 import { AuthState, RootState } from "../types/interfaces";
+import Meta from "../components/Meta";
 
 const ProductScreen = () => {
     const dispatch = useDispatch();
@@ -78,6 +79,7 @@ const ProductScreen = () => {
                 Go Back
             </Link>
             <>
+                <Meta title={product.name} description={product.description}/>
                 <Row>
                     <Col md={5}>
                         <Image src={product.image} alt={product.name} fluid></Image>

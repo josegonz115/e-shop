@@ -8,36 +8,24 @@ import {
     ReviewProductRequest,
 } from "../types/types";
 
-// // @desc   Fetch all products
-// // @route   GET /api/products
-// // @access  Public
-// const getProducts = asyncHandler<OrderRequest>(async (req, res) => {
-//     const pageSize = 4;
-//     const page = Number(req.query.pageNumber) || 1;
-//     const count = await Product.countDocuments();
-
-//     const products = await Product.find({})
-//         .limit(pageSize)
-//         .skip(pageSize * (page - 1));
-//     res.json({products, page, pages: Math.ceil(count / pageSize)});
-// });
-
-
 // @desc   Fetch all products
 // @route   GET /api/products
 // @access  Public
 const getProducts = asyncHandler<OrderRequest>(async (req, res) => {
-    const pageSize = 4;
+    const pageSize = 8;
     const page = Number(req.query.pageNumber) || 1;
-    const count = await Product.countDocuments();
 
-    const products = await Product.find({})
+    const keyword = req.query.keyword
+        ? { name: { $regex: req.query.keyword, $options: "i" } }
+        : {};
+
+    const count = await Product.countDocuments({...keyword});
+
+    const products = await Product.find({...keyword})
         .limit(pageSize)
         .skip(pageSize * (page - 1));
-    res.json({products, page, pages: Math.ceil(count / pageSize)});
+    res.json({ products, page, pages: Math.ceil(count / pageSize) });
 });
-
-
 
 // @desc   Fetch a product
 // @route   GET /api/products/:id
@@ -149,6 +137,21 @@ const createProductReview = asyncHandler<ReviewProductRequest>(
     }
 );
 
+
+// @desc    Get top rated products
+// @route   GET /api/products/top
+// @access  Public
+const getTopProducts = asyncHandler<ProductRequest>(async (req, res) => {
+    const products = await Product.find({}).sort({ rating: -1 }).limit(3);
+    if (products) {
+        res.status(200).json(products);
+        return;
+    } else {
+        res.status(404);
+        throw new Error("Top products not found");
+    }
+});
+
 export {
     getProducts,
     getProductById,
@@ -156,4 +159,5 @@ export {
     updateProduct,
     deleteProduct,
     createProductReview,
+    getTopProducts,
 };

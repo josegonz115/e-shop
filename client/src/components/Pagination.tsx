@@ -5,12 +5,14 @@ type PaginationProps = {
     pages: number;
     page: number;
     isAdmin?: boolean;
+    keyword?: string;
 };
 
 const Pagination: React.FC<PaginationProps> = ({
     pages,
     page,
     isAdmin = false,
+    keyword = "",
 }) => {
     return pages > 1 ? (
         <PaginationBS>
@@ -19,7 +21,9 @@ const Pagination: React.FC<PaginationProps> = ({
                     key={x + 1}
                     to={
                         !isAdmin
-                            ? `/page/${x + 1}`
+                            ? keyword.length > 0
+                                ? `/search/${keyword}/page/${x + 1}`
+                                : `/page/${x + 1}`
                             : `/admin/productList/${x + 1}`
                     }
                 >

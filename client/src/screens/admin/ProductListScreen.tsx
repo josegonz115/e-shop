@@ -10,8 +10,9 @@ import { addDecimals } from "../../utils/cartUtils";
 import Pagination from "../../components/Pagination";
 
 const ProductListScreen = () => {
-    const { pageNumber='1' } = useParams();
+    const { keyword='', pageNumber='1' } = useParams();
     const pageInfo = {
+        keyword,
         pageNumber: Number(pageNumber),
       };
     const { data, isLoading, error, refetch } = useGetProductsQuery(pageInfo);

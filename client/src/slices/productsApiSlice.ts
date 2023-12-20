@@ -22,15 +22,17 @@ import { product, productsPages, review} from "../types/interfaces";
 // };
 
 interface PageNumberParam {
+    keyword:string;
     pageNumber: number;
 };
 
 export const productsApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
         getProducts: builder.query<productsPages, PageNumberParam>({
-            query: ( {pageNumber} ) => ({
+            query: ( {keyword, pageNumber} ) => ({
                 url: PRODUCT_URL,
                 params: {
+                    keyword,
                     pageNumber,
                 },
             }),
@@ -86,10 +88,10 @@ export const productsApiSlice = apiSlice.injectEndpoints({
             }),
             invalidatesTags: ["Product"],
         }),
-        // getTopProducts: builder.query({
-        //     query: () => `${PRODUCTS_URL}/top`,
-        //     keepUnusedDataFor: 5,
-        //   }),
+        getTopProducts: builder.query<product[], void>({
+            query: () => `${PRODUCT_URL}/top`,
+            keepUnusedDataFor: 5,
+          }),
     }),
 });
 
@@ -101,4 +103,5 @@ export const {
     useUploadProductImageMutation,
     useDeleteProductMutation,
     useCreateReviewMutation,
+    useGetTopProductsQuery,
 } = productsApiSlice;

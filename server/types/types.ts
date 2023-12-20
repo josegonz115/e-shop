@@ -41,6 +41,7 @@ export interface OrderRequest extends AuthRequest {
     body: IOrder;
     params:{
         id:string;
+        keyword:string;
         pageNumber: string;
     };
 }
