@@ -12,7 +12,7 @@ import {
 // @route   GET /api/products
 // @access  Public
 const getProducts = asyncHandler<OrderRequest>(async (req, res) => {
-    const pageSize = 8;
+    const pageSize = Number(process.env.PAGINATION_LIMIT);
     const page = Number(req.query.pageNumber) || 1;
 
     const keyword = req.query.keyword

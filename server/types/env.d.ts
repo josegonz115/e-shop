@@ -7,6 +7,7 @@ declare global {
             JWT_SECRET: string;
             PAYPAL_CLIENT_ID: string;
             PAYLAL_SECRET_KEY: string;
+            PAGINATION_LIMIT:string;
         }
     }
 }
